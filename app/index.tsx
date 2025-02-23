@@ -1,9 +1,11 @@
-import { Text, View, StyleSheet, Dimensions, Modal} from "react-native";
+import {View, StyleSheet} from "react-native";
 
 import Logo from "@/components/Logo";
 import ProgressBar from "@/components/ProgressBar";
-import BottomModal from "@/components/BottomModal";
 import TitleAndPrompt from "@/components/TitleAndPrompt";
+import BottomModal from "@/components/BottomModal";
+
+import OnboardingScreens from "./OnboardingScreens";
 
 export default function Index() {
   return (
@@ -11,7 +13,7 @@ export default function Index() {
       <Logo name="SYFT"/>
       <ProgressBar number={1}/>
       <TitleAndPrompt title="Hey!" prompt="What should we call you? *"/>
-      <BottomModal/>
+      <BottomModal screen={0} />
     </View>
   );
 }

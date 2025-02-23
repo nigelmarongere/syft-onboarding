@@ -9,12 +9,16 @@ export default function ProgressBar({number}: Props) {
         <View style={styles.header}>
             <View style={styles.progressContainer}>
                 <View style={styles.progressCircleActive}>
-                    <Text style={styles.progressCirleNumber}>{number}</Text>
+                    <Text style={styles.progressCirleNumberActive}>1</Text>
                 </View>
                 <View style={styles.progressLineActive} />
-                <View style={styles.progressCircle} />
+                <View style={styles.progressCircle}>
+                    <Text style={styles.progressCirleNumber}>2</Text>
+                </View>
                 <View style={styles.progressLine} />
-                <View style={styles.progressCircle} />
+                <View style={styles.progressCircle}>
+                    <Text style={styles.progressCirleNumber}>3</Text>
+                </View>
             </View>
             <View style={styles.progressTextContainer}>
                 <Text style={styles.progressText}>Quick Setup</Text>
@@ -38,7 +42,6 @@ const styles = StyleSheet.create({
       width: 30,
       height: 30,
       borderRadius: 15,
-      backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
       width: 30,
       height: 30,
       borderRadius: 15,
-      backgroundColor: '#FFD700',
+      backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -54,15 +57,25 @@ const styles = StyleSheet.create({
       color: '#fff',
       fontSize: 16
     },
+    progressCirleNumberActive: {
+        color: '#3D5BFF',
+        fontSize: 16
+      },
     progressLine: {
-      width: 75,
+      width: 50,
       height: 2,
       backgroundColor: '#fff',
+      borderStyle: 'dashed',
+      borderColor: '#3D5BFF',
+      borderWidth: 1,
     },
     progressLineActive: {
-      width: 75,
+      width: 50,
       height: 2,
-      backgroundColor: '#FFD700',
+      backgroundColor: '#fff',
+      borderStyle: 'dashed',
+      borderColor: '#3D5BFF',
+      borderWidth: 1,
     },
     progressTextContainer: {
         flexDirection: 'row',
@@ -70,7 +83,7 @@ const styles = StyleSheet.create({
     },
     progressText: {
       color: '#fff',
-      fontSize: 14,
+      fontSize: 12,
       marginHorizontal: 5,
     }
   });

@@ -1,6 +1,10 @@
 import { Modal, View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 
-export default function BottomModal() {
+type Props = {
+  screen: number
+}
+
+export default function BottomModal({screen}: Props) {
   return (
     <Modal animationType="slide" transparent={true} visible={true}>
       <View style={styles.overlay}>
@@ -31,20 +35,20 @@ const styles = StyleSheet.create({
   sheet: {
     height: "50%", // Take up 50% of the screen height
     backgroundColor: '#A8E6CF',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
     padding: 20,
     elevation: 5,
     justifyContent: 'center'
   },
   step: {
     fontSize: 16,
-    color: '#333',
+    color: '#2B3B7F',
     marginBottom: 10,
   },
   label: {
     fontSize: 16,
-    color: '#333',
+    color: '#2B3B7F',
     alignSelf: 'flex-start',
     marginBottom: 5,
   },
@@ -57,9 +61,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     backgroundColor: '#fff',
+    color: "#2B3B7F"
   },
   button: {
-    backgroundColor: '#3D5BFF',
+    backgroundColor: '#2B3B7F',
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
