@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { Modal, View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 import ToggleButton from "./ToggleButton";
 
 type Props = {
-  screen: number
+  screen: number,
+  setTitle: (title: string) => void,
+  setPrompt: (prompt: string) => void
 }
 
-export default function BottomModal({screen}: Props) {
+export default function BottomModal({screen, setTitle, setPrompt}: Props) {
   const [isNameSection, setIsNameSection] = useState<boolean>(true);
 
   const [isFirstFocused, setIsFirstFocused] = useState<boolean>(false);
@@ -18,10 +23,24 @@ export default function BottomModal({screen}: Props) {
   const [isEmailFocused, setIsEmailFocused] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('')
 
+  const [active, setActive] = useState('Type');
+
+  const nextStep = () => {
+    setIsNameSection(false);
+    setTitle('Nice!')
+    setPrompt('How should we set this up? *')
+  }
+
+  const backStep = () => {
+    setIsNameSection(true);
+    setTitle('Hey!')
+    setPrompt('What should we call you? *')
+  }
+
   return (
     <Modal animationType="slide" transparent={true} visible={true}>
       <View style={styles.overlay}>
-        <View style={styles.sheet}>
+        <View style={isNameSection ? styles.sheetName : styles.sheetNotName}>
           {isNameSection ? (
             <View>
               <Text style={styles.step}>1.</Text>
@@ -49,34 +68,63 @@ export default function BottomModal({screen}: Props) {
               <TouchableOpacity 
                 style={firstName && lastName ? styles.button : styles.buttonDisabled}
                 disabled={!firstName || !lastName}
-                onPress={() => setIsNameSection(false)}
+                onPress={() => nextStep()}
               >
                 <Text style={styles.buttonText}>Next Step &gt;</Text>
               </TouchableOpacity>
             </View>
           ) : (
-            <View>
-              <ToggleButton/>
+            active === 'Type' ? (
+              <View>
+                <View style={styles.backAndToggleContainer}>
+                  <TouchableOpacity style={styles.backButton} onPress={() => backStep()}>
+                    <Text style={styles.backButtonText}>&lt;</Text>
+                  </TouchableOpacity>
+                  <ToggleButton active={active} setActive={setActive}/>
+                </View>
 
-              <TouchableOpacity style={styles.backButton} onPress={() => setIsNameSection(true)}>
-                <Text style={styles.backButtonText}>&lt;</Text>
-              </TouchableOpacity>
+                <Text style={styles.step}>2.</Text>
+                
+                <Text style={styles.label}>Email *</Text>
+                <TextInput 
+                  style={[styles.input, isEmailFocused && styles.inputFocused]} 
+                  onFocus={() => setIsEmailFocused(true)}
+                  onBlur={() => setIsEmailFocused(false)}
+                  placeholder={email ? email : "you@example.com"}
+                  onChangeText={setEmail}
+                />
 
-              <Text style={styles.step}>2.</Text>
-              
-              <Text style={styles.label}>Email *</Text>
-              <TextInput 
-                style={[styles.input, isEmailFocused && styles.inputFocused]} 
-                onFocus={() => setIsEmailFocused(true)}
-                onBlur={() => setIsEmailFocused(false)}
-                placeholder="you@example.com"
-                onChangeText={setEmail}
-              />
+                <TouchableOpacity style={email ? styles.button : styles.buttonDisabled} disabled={!email}>
+                  <Text style={styles.buttonText}>Next Step &gt;</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View>
+                <View style={styles.backAndToggleContainer}>
+                  <TouchableOpacity style={styles.backButton} onPress={() => setIsNameSection(true)}>
+                    <Text style={styles.backButtonText}>&lt;</Text>
+                  </TouchableOpacity>
+                  <ToggleButton active={active} setActive={setActive}/>
+                </View>
 
-              <TouchableOpacity style={email ? styles.button : styles.buttonDisabled} disabled={!email}>
-                <Text style={styles.buttonText}>Next Step &gt;</Text>
-              </TouchableOpacity>
-            </View>
+                <Text style={styles.step}>2.</Text>
+
+                <Text style={styles.label}>Link an existing account *</Text>
+                <Text style={styles.info}>Selecting this option will redirect you to a separate screen to complete the login process.</Text>
+                <Text style={styles.info}>You'll be redirected back here once done.</Text>
+
+                <View style={styles.linkButtonContainer}>
+                  <TouchableOpacity style={styles.linkButton}>
+                    <FontAwesome6 style={styles.linkButtonIcon} name="google" size={20} color="white"/>
+                    <Text style={styles.linkButtonText}>  Continue with Google</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.linkButton}>
+                    <AntDesign style={styles.linkButtonIcon} name="apple1" size={24} color="white"/>
+                    <Text style={styles.linkButtonText}> Continue with Apple</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
           )}
         </View>
       </View>
@@ -90,19 +138,28 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     // backgroundColor: "rgba(0,0,0,0.2)", // Semi-transparent background
   },
-  sheet: {
+  sheetName: {
     height: "50%", // Take up 50% of the screen height
     backgroundColor: '#A8E6CF',
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
     padding: 20,
     elevation: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+  sheetNotName: {
+    height: "50%", // Take up 50% of the screen height
+    backgroundColor: '#A8E6CF',
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    padding: 20,
+    elevation: 5
   },
   step: {
     fontSize: 16,
     color: '#2B3B7F',
     marginBottom: 10,
+    paddingVertical: 10,
   },
   label: {
     fontSize: 18,
@@ -157,5 +214,37 @@ const styles = StyleSheet.create({
   backButtonText: {
     color: '#2B3B7F',
     fontSize: 22
+  },
+  backAndToggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  info: {
+    color: '#4B5A8F',
+    marginVertical: 10
+  },
+  linkButton: {
+    backgroundColor: '#2B3B7F',
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    width: '70%',
+    marginVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  linkButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    textAlign: 'left'
+  },
+  linkButtonIcon: {
+    color: '#fff',
+  },
+  linkButtonContainer: {
+    paddingTop: '5%',
+    justifyContent: 'center'
   }
 });
