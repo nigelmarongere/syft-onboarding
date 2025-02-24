@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Modal, View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 
 type Props = {
@@ -5,6 +6,9 @@ type Props = {
 }
 
 export default function BottomModal({screen}: Props) {
+  const [isFirstFocused, setIsFirstFocused] = useState<boolean>(false);
+  const [isLastFocused, setIsLastFocused] = useState<boolean>(false);
+
   return (
     <Modal animationType="slide" transparent={true} visible={true}>
       <View style={styles.overlay}>
@@ -12,10 +16,21 @@ export default function BottomModal({screen}: Props) {
             <Text style={styles.step}>1.</Text>
             
             <Text style={styles.label}>First name *</Text>
-            <TextInput style={styles.input} placeholder="Jane" />
+            <TextInput 
+              style={[styles.input, isFirstFocused && styles.inputFocused]} 
+              placeholder="Jane"
+              onFocus={() => setIsFirstFocused(true)}
+              onBlur={() => setIsFirstFocused(false)}
+              selectionColor="transparent"
+            />
 
             <Text style={styles.label}>Last name *</Text>
-            <TextInput style={styles.input} placeholder="Doe" />
+            <TextInput 
+              style={[styles.input, isLastFocused && styles.inputFocused]} 
+              placeholder="Doe"
+              onFocus={() => setIsLastFocused(true)}
+              onBlur={() => setIsLastFocused(false)}
+            />
 
             <TouchableOpacity style={styles.button}>
               <Text style={styles.buttonText}>Next Step &gt;</Text>
@@ -47,7 +62,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   label: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#2B3B7F',
     alignSelf: 'flex-start',
     marginBottom: 5,
@@ -55,13 +70,24 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
+    borderColor: '#2B3B7F',
+    borderBottomWidth: 1.5,
     paddingHorizontal: 10,
     marginBottom: 20,
-    backgroundColor: '#fff',
-    color: "#2B3B7F"
+    color: "#2B3B7F",
+    fontSize: 18,
+    outlineColor: "transparent"
+  },
+  inputFocused: {
+    width: '100%',
+    height: 50,
+    borderColor: '#2B3B7F',
+    borderBottomWidth: 4.5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    color: "#2B3B7F",
+    fontSize: 18,
+    outlineColor: "transparent"
   },
   button: {
     backgroundColor: '#2B3B7F',
