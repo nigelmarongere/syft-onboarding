@@ -1,40 +1,83 @@
 import { useState } from "react";
 import { Modal, View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 
+import ToggleButton from "./ToggleButton";
+
 type Props = {
   screen: number
 }
 
 export default function BottomModal({screen}: Props) {
+  const [isNameSection, setIsNameSection] = useState<boolean>(true);
+
   const [isFirstFocused, setIsFirstFocused] = useState<boolean>(false);
   const [isLastFocused, setIsLastFocused] = useState<boolean>(false);
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+
+  const [isEmailFocused, setIsEmailFocused] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('')
 
   return (
     <Modal animationType="slide" transparent={true} visible={true}>
       <View style={styles.overlay}>
         <View style={styles.sheet}>
-            <Text style={styles.step}>1.</Text>
-            
-            <Text style={styles.label}>First name *</Text>
-            <TextInput 
-              style={[styles.input, isFirstFocused && styles.inputFocused]} 
-              placeholder="Jane"
-              onFocus={() => setIsFirstFocused(true)}
-              onBlur={() => setIsFirstFocused(false)}
-              selectionColor="transparent"
-            />
+          {isNameSection ? (
+            <View>
+              <Text style={styles.step}>1.</Text>
+              
+              <Text style={styles.label}>First name *</Text>
+              <TextInput 
+                style={[styles.input, isFirstFocused && styles.inputFocused]} 
+                placeholder={firstName ? firstName : "Jane"}
+                onFocus={() => setIsFirstFocused(true)}
+                onBlur={() => setIsFirstFocused(false)}
+                onChangeText={setFirstName}
+                selectionColor="transparent"
+              />
 
-            <Text style={styles.label}>Last name *</Text>
-            <TextInput 
-              style={[styles.input, isLastFocused && styles.inputFocused]} 
-              placeholder="Doe"
-              onFocus={() => setIsLastFocused(true)}
-              onBlur={() => setIsLastFocused(false)}
-            />
+              <Text style={styles.label}>Last name *</Text>
+              <TextInput 
+                style={[styles.input, isLastFocused && styles.inputFocused]} 
+                placeholder={lastName ? lastName : "Doe"}
+                onFocus={() => setIsLastFocused(true)}
+                onBlur={() => setIsLastFocused(false)}
+                onChangeText={setLastName}
+                selectionColor="transparent"
+              />
 
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Next Step &gt;</Text>
-            </TouchableOpacity>
+              <TouchableOpacity 
+                style={firstName && lastName ? styles.button : styles.buttonDisabled}
+                disabled={!firstName || !lastName}
+                onPress={() => setIsNameSection(false)}
+              >
+                <Text style={styles.buttonText}>Next Step &gt;</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View>
+              <ToggleButton/>
+
+              <TouchableOpacity style={styles.backButton} onPress={() => setIsNameSection(true)}>
+                <Text style={styles.backButtonText}>&lt;</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.step}>2.</Text>
+              
+              <Text style={styles.label}>Email *</Text>
+              <TextInput 
+                style={[styles.input, isEmailFocused && styles.inputFocused]} 
+                onFocus={() => setIsEmailFocused(true)}
+                onBlur={() => setIsEmailFocused(false)}
+                placeholder="you@example.com"
+                onChangeText={setEmail}
+              />
+
+              <TouchableOpacity style={email ? styles.button : styles.buttonDisabled} disabled={!email}>
+                <Text style={styles.buttonText}>Next Step &gt;</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
     </Modal>
@@ -96,8 +139,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignSelf: 'center'
   },
+  buttonDisabled: {
+    backgroundColor: 'grey',
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: 'center'
+  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
   },
+  backButton: {
+    paddingVertical: 25,
+    width: '10%'
+  },
+  backButtonText: {
+    color: '#2B3B7F',
+    fontSize: 22
+  }
 });
