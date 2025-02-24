@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Modal, View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { useState, useEffect } from "react";
+import { Modal, View, KeyboardAvoidingView, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Keyboard } from "react-native";
 
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -28,17 +28,19 @@ export default function BottomModal({setTitle, setPrompt}: Props) {
     setIsNameSection(false);
     setTitle('Nice!')
     setPrompt('How should we set this up? *')
+    setActive('Type')
   }
 
   const backStep = () => {
     setIsNameSection(true);
     setTitle('Hey!')
     setPrompt('What should we call you? *')
+    setActive('Type')
   }
 
   return (
     <Modal animationType="slide" transparent={true} visible={true}>
-      <View style={styles.overlay}>
+      <KeyboardAvoidingView style={styles.overlay} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={isNameSection ? styles.sheetName : styles.sheetNotName}>
           {isNameSection ? (
             <View>
@@ -66,13 +68,15 @@ export default function BottomModal({setTitle, setPrompt}: Props) {
                 selectionColor="transparent"
               />
 
-              <TouchableOpacity 
-                style={firstName && lastName ? styles.button : styles.buttonDisabled}
-                disabled={!firstName || !lastName}
-                onPress={() => nextStep()}
-              >
-                <Text style={styles.buttonText}>Next Step &gt;</Text>
-              </TouchableOpacity>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity 
+                  style={firstName && lastName ? styles.button : styles.buttonDisabled}
+                  disabled={!firstName || !lastName}
+                  onPress={() => nextStep()}
+                >
+                  <Text style={styles.buttonText}>Next Step &gt;</Text>
+                </TouchableOpacity>
+              </View>
             </View>
             ) : (
             active === 'Type' ? (
@@ -95,10 +99,11 @@ export default function BottomModal({setTitle, setPrompt}: Props) {
                   placeholderTextColor="#4B5A8F"
                   onChangeText={setEmail}
                 />
-
-                <TouchableOpacity style={email ? styles.button : styles.buttonDisabled} disabled={!email}>
-                  <Text style={styles.buttonText}>Next Step &gt;</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={email ? styles.button : styles.buttonDisabled} disabled={!email}>
+                    <Text style={styles.buttonText}>Next Step &gt;</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             ) : (
               <View>
@@ -129,7 +134,7 @@ export default function BottomModal({setTitle, setPrompt}: Props) {
             )
           )}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -138,10 +143,9 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: "flex-end",
-    // backgroundColor: "rgba(0,0,0,0.2)", // Semi-transparent background
   },
   sheetName: {
-    height: "50%", // Take up 50% of the screen height
+    height: 'auto',
     backgroundColor: '#A8E6CF',
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
@@ -150,7 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sheetNotName: {
-    height: "50%", // Take up 50% of the screen height
+    height: 'auto',
     backgroundColor: '#A8E6CF',
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
@@ -198,7 +202,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   buttonDisabled: {
     backgroundColor: 'grey',
@@ -207,13 +211,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignSelf: 'center'
   },
+  buttonContainer: {
+    paddingBottom: "15%"
+  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
   },
   backButton: {
     paddingVertical: 25,
-    width: '10%'
+    width: '10%',
   },
   backButtonText: {
     color: '#2B3B7F',
@@ -249,6 +256,7 @@ const styles = StyleSheet.create({
   },
   linkButtonContainer: {
     paddingTop: '5%',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingBottom: '15%'
   }
 });

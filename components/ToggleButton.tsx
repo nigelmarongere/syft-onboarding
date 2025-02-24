@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#6A9B8F',
     borderRadius: 17.5,
-    padding: 5,
-    width: 100,
-    height: '45%',
+    // padding: 5,
+    width: 120,
+    // height: '45%',
 
     position: 'absolute',
     left: '50%',
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     borderRadius: 17.5,
   },
   activeButton: {
-
   },
   buttonText: {
     color: '#2B3B7F',
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
   slider: {
     position: 'absolute',
     height: '100%',
-    width: '50%',
+    width: '60%',
     backgroundColor: '#fff',
     borderRadius: 17.5,
     top: 0,

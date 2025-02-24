@@ -1,4 +1,4 @@
-import {View, StyleSheet} from "react-native";
+import {View, KeyboardAvoidingView, StyleSheet} from "react-native";
 
 import Logo from "@/components/Logo";
 import ProgressBar from "@/components/ProgressBar";
