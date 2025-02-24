@@ -7,12 +7,11 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import ToggleButton from "./ToggleButton";
 
 type Props = {
-  screen: number,
   setTitle: (title: string) => void,
   setPrompt: (prompt: string) => void
 }
 
-export default function BottomModal({screen, setTitle, setPrompt}: Props) {
+export default function BottomModal({setTitle, setPrompt}: Props) {
   const [isNameSection, setIsNameSection] = useState<boolean>(true);
 
   const [isFirstFocused, setIsFirstFocused] = useState<boolean>(false);
@@ -49,6 +48,7 @@ export default function BottomModal({screen, setTitle, setPrompt}: Props) {
               <TextInput 
                 style={[styles.input, isFirstFocused && styles.inputFocused]} 
                 placeholder={firstName ? firstName : "Jane"}
+                placeholderTextColor="#4B5A8F"
                 onFocus={() => setIsFirstFocused(true)}
                 onBlur={() => setIsFirstFocused(false)}
                 onChangeText={setFirstName}
@@ -59,6 +59,7 @@ export default function BottomModal({screen, setTitle, setPrompt}: Props) {
               <TextInput 
                 style={[styles.input, isLastFocused && styles.inputFocused]} 
                 placeholder={lastName ? lastName : "Doe"}
+                placeholderTextColor="#4B5A8F"
                 onFocus={() => setIsLastFocused(true)}
                 onBlur={() => setIsLastFocused(false)}
                 onChangeText={setLastName}
@@ -73,7 +74,7 @@ export default function BottomModal({screen, setTitle, setPrompt}: Props) {
                 <Text style={styles.buttonText}>Next Step &gt;</Text>
               </TouchableOpacity>
             </View>
-          ) : (
+            ) : (
             active === 'Type' ? (
               <View>
                 <View style={styles.backAndToggleContainer}>
@@ -85,12 +86,13 @@ export default function BottomModal({screen, setTitle, setPrompt}: Props) {
 
                 <Text style={styles.step}>2.</Text>
                 
-                <Text style={styles.label}>Email *</Text>
+                <Text style={styles.label}>Email address *</Text>
                 <TextInput 
                   style={[styles.input, isEmailFocused && styles.inputFocused]} 
                   onFocus={() => setIsEmailFocused(true)}
                   onBlur={() => setIsEmailFocused(false)}
-                  placeholder={email ? email : "you@example.com"}
+                  placeholder={email ? email : "janedoe@gmail.com"}
+                  placeholderTextColor="#4B5A8F"
                   onChangeText={setEmail}
                 />
 
@@ -160,12 +162,14 @@ const styles = StyleSheet.create({
     color: '#2B3B7F',
     marginBottom: 10,
     paddingVertical: 10,
+    fontWeight: 'bold',
   },
   label: {
     fontSize: 18,
     color: '#2B3B7F',
     alignSelf: 'flex-start',
     marginBottom: 5,
+    fontWeight: 'bold',
   },
   input: {
     width: '100%',
