@@ -9,7 +9,7 @@ import BottomModal from "@/components/BottomModal";
 import { useState } from "react";
 
 export default function Index() {
-  const [isScreenZero, setIsScreenZero] = useState<boolean>(false);
+  const [isScreenZero, setIsScreenZero] = useState<boolean>(true);
   const [title, setTitle] = useState<string>('Hey!');
   const [prompt, setPrompt] = useState<string>('Are you ready to start?');
 

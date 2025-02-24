@@ -13,12 +13,11 @@ export default function ModalZero({setTitle, setPrompt, setIsScreenZero}: Props)
         setIsScreenZero(false)
     }
     return (
-        <TouchableOpacity onPress={nextScreen}>
             <Modal animationType="slide" transparent={true} visible={true}>
-                <View style={styles.overlay}/>
-                <View style={styles.sheet}/>
+                <View style={styles.overlay} />
+                <TouchableOpacity style={styles.sheet} onPress={nextScreen}>
+                </TouchableOpacity>
             </Modal>
-        </TouchableOpacity>
     )
 }
 
